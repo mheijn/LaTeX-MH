@@ -1,0 +1,299 @@
+% \iffalse meta-comment
+%
+% Copyright (C) <+year+> by Marc Heijn <marc@heijn-buis.demon.nl>
+% ---------------------------------------------------------------------------
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is <+maintainer+>.
+%
+% This work consists of the files unresolved.dtx and unresolved.ins
+% and the derived filebase unresolved.<+extension+>.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{unresolved.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\Provides<+Type+>{unresolved}
+%<*package>
+    [2025/10/07 v0.3 tikz-partitions]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{unresolved}[2025/10/07]
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{unresolved.dtx}
+  \PrintChanges
+  \PrintIndex
+\end{document}
+%</driver>
+% \fi 
+%
+% \CheckSum{123}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v0.3}{2025/10/07}{First time DTX-file}
+%
+% \DoNotIndex{\newcommand,\newenvironment}
+%
+% \providecommand*{\url}{\texttt}
+% \GetFileInfo{unresolved.dtx}
+% \title{The \textsf{unresolved} package}
+% \author{Marc Heijn \\ \url{marc@heijn-buis.demon.nl}}
+% \date{\fileversion~from \filedate}
+%
+% \maketitle
+%
+%
+% \section{Introduction}
+% The package collects unknown statements and makes a list of unresolved items.
+%
+% \section{Install}
+% \begin{verbatim}
+% latex unresolved.ins
+% bash install.sh
+% \end{verbatim}
+%
+% \section{Usage}
+% \subsection*{input}
+% \begin{verbatim}
+% \setPrefixUnresolvedProblems{p}
+%
+% Text about $\mathbf{p(n)}$
+% \unknown{Explanation of partition function $\mathbf{{p(n)}}$}.
+% Another\unknown{Different math, $\alpha+\beta$}.
+% Third\unknown{Plain text only}.
+%
+% \bigskip
+% \setNameUnresolvedProblems{Onopgeloste problemen}
+% \unresolveditems
+% \end{verbatim}
+%
+% \subsection*{output}
+% \setPrefixUnresolvedProblems{p}
+%
+% Text about $\mathbf{p(n)}$
+% \unknown{Explanation of partition function $\mathbf{{p(n)}}$}.
+% Another\unknown{Different math, $\alpha+\beta$}.
+% Third\unknown{Plain text only}.
+%
+% \bigskip
+% \setNameUnresolvedProblems{Onopgeloste problemen}
+% \unresolveditems
+% 
+%
+% \StopEventually{}
+%
+% \section{Implementation}
+%
+%
+% \iffalse
+%<*unresolved>
+% \fi
+%% \subsection{unresolved}
+%    \begin{macrocode}
+\RequirePackage{hyperref}
+%    \end{macrocode}
+%
+% \begin{macro}{\UK@prefix}
+%    \begin{macrocode}
+\def\UK@prefix{}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\setPrefixUnresolvedProblems}
+%    \begin{macrocode}
+\newcommand{\setPrefixUnresolvedProblems}[1]{\gdef\UK@prefix{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\newcounter{counter@unknown}
+\let\@unresolveditems\relax
+%    \end{macrocode}
+%
+% \begin{macro}{\unknown}
+%    \begin{macrocode}
+\newcommand{\unknown}[1]{%
+  \stepcounter{counter@unknown}%
+  \edef\UK@num{\UK@prefix\thecounter@unknown}% expand counter to string
+  \hypertarget{UK\UK@num}{\textsuperscript{\UK@num}}%
+  \ifx\@unresolveditems\relax\gdef\@unresolveditems{}\fi%
+  \begingroup
+  \protected@edef\next{\endgroup\noexpand\g@addto@macro\noexpand\@unresolveditems{\noexpand\item[\noexpand\hyperlink{UK\UK@num}{\UK@num}] #1}}%
+  \next
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\nameunresolvedproblems}
+%    \begin{macrocode}
+\def\nameunresolvedproblems{Unresolved problems}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\setNameUnresolvedProblems}
+%    \begin{macrocode}
+\newcommand{\setNameUnresolvedProblems}[1]{\gdef\nameunresolvedproblems{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\unresolveditems}
+%    \begin{macrocode}
+\newcommand{\unresolveditems}{
+\ifx\@unresolveditems\relax\else%
+\section*{\nameunresolvedproblems}
+\begin{itemize}
+\@unresolveditems
+\end{itemize}
+\fi%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</unresolved>
+% \fi
+% \iffalse
+%<*unresolved.ltxml>
+% \fi
+%% \subsection{unresolved.ltxml}
+%    \begin{macrocode}
+# -*- mode: Perltidy -*-
+# LaTeXML bindings for local.sty
+package LaTeXML::Package::pool; # to put new subs & variables in common pool
+use LaTeXML::Package; # to load these definitions
+use strict; # good style
+use warnings;
+RawTeX(<<'EOTeX');
+\ProvidesPackage{unresolved}
+\RequirePackage{hyperref}
+%    \end{macrocode}
+%
+% \begin{macro}{\UK@prefix}
+%    \begin{macrocode}
+\def\UK@prefix{}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\setPrefixUnresolvedProblems}
+%    \begin{macrocode}
+\newcommand{\setPrefixUnresolvedProblems}[1]{\gdef\UK@prefix{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\newcounter{counter@unknown}
+\let\@unresolveditems\relax
+%    \end{macrocode}
+%
+% \begin{macro}{\unknown}
+%    \begin{macrocode}
+\newcommand{\unknown}[1]{%
+  \stepcounter{counter@unknown}%
+  \edef\UK@num{\UK@prefix\thecounter@unknown}% expand counter to string
+  \hypertarget{UK\UK@num}{\textsuperscript{\UK@num}}%
+  \ifx\@unresolveditems\relax\gdef\@unresolveditems{}\fi%
+  \begingroup
+  \protected@edef\next{\endgroup\noexpand\g@addto@macro\noexpand\@unresolveditems{\noexpand\item[\noexpand\hyperlink{UK\UK@num}{\UK@num}] #1}}%
+  \next
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\nameunresolvedproblems}
+%    \begin{macrocode}
+\def\nameunresolvedproblems{Unresolved problems}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\setNameUnresolvedProblems}
+%    \begin{macrocode}
+\newcommand{\setNameUnresolvedProblems}[1]{\gdef\nameunresolvedproblems{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\unresolveditems}
+%    \begin{macrocode}
+\newcommand{\unresolveditems}{
+\ifx\@unresolveditems\relax\else%
+\section*{\nameunresolvedproblems}
+\begin{itemize}
+\@unresolveditems
+\end{itemize}
+\fi%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+EOTeX
+1;
+%    \end{macrocode}
+% \iffalse
+%</unresolved.ltxml>
+% \fi
+% \iffalse
+%<*install>
+#!/bin/bash
+BASEFILE="unresolved"
+OUTDIRSTY=~/texmf/tex/latex/mh
+OUTDIRXML=~/texmf/tex/latexml/mh
+OUTDIRDOC=~/texmf/doc/latex/mh
+
+pdflatex $BASEFILE.dtx
+okular $BASEFILE.pdf &
+
+mkdir -p $OUTDIRDOC
+mkdir -p $OUTDIRSTY
+mkdir -p $OUTDIRXML
+
+rm $BASEFILE.aux $BASEFILE.out $BASEFILE.idx $BASEFILE.log  $BASEFILE.glo
+mv ./$BASEFILE.sty $OUTDIRSTY/$BASEFILE.sty
+mv ./$BASEFILE.sty.ltxml $OUTDIRXML/$BASEFILE.sty.ltxml
+cp ./$BASEFILE.pdf $OUTDIRDOC/$BASEFILE.pdf
+mktexlsr
+%</install>
+% \fi
+%
+%
+% \Finale
+\endinput

@@ -1,0 +1,653 @@
+% \iffalse meta-comment
+%
+% Copyright (C) <+year+> by Marc Heijn <marc@heijn-buis.demon.nl>
+% ---------------------------------------------------------------------------
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is <+maintainer+>.
+%
+% This work consists of the files frontpage.dtx and frontpage.ins
+% and the derived filebase frontpage.<+extension+>.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{frontpage.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\Provides<+Type+>{frontpage}
+%<*package>
+    [2025/10/08 v0.3 tikz-partitions]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{frontpage}[2025/10/08]
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{frontpage.dtx}
+  \PrintChanges
+  \PrintIndex
+\end{document}
+%</driver>
+% \fi 
+%
+% \CheckSum{639}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v0.3}{2025/10/08}{First time DTX-file}
+%
+% \DoNotIndex{\newcommand,\newenvironment}
+%
+% \providecommand*{\url}{\texttt}
+% \GetFileInfo{frontpage.dtx}
+% \title{The \textsf{frontpage} package}
+% \author{Marc Heijn \\ \url{marc@heijn-buis.demon.nl}}
+% \date{\fileversion~from \filedate}
+%
+% \maketitle
+%
+%
+%
+% \section{Introduction}
+% The package creates a front page.
+%
+% \section{Install}
+% \begin{verbatim}
+% latex frontpage.ins
+% bash install.sh
+% \end{verbatim}
+%
+% \section{Usage}
+%
+% \begin{verbatim}
+% \title{The frontpage package}
+% \subtitle{an MH-package}
+% \abstracttitle{The frontpage package}
+% \author[marc@heijn-buis.demon.nl]{Marc Heijn}
+% \date{October 12, 2023}
+% \what{package}
+% \programme{Homebrew packages}
+% \coverimage{%
+% \vspace*{-4cm}
+% \includegraphics[width=\textwidth]{zwaluw_r}
+% \vspace*{-5cm}
+% }
+% 
+% \makefrontpage
+% \maketitle
+% \end{verbatim}
+%
+% \newpage
+% \makeatletter
+% \def\MH@authors{}
+% \setcounter{authors}{0}
+% \makeatother
+%
+% \title{The frontpage package}
+% \subtitle{an MH-package}
+% \abstracttitle{The frontpage package}
+% \author[marc@heijn-buis.demon.nl]{M. Heijn}
+% \date{October 12, 2023}
+% \what{package}
+% \programme{Homebrew packages}
+% \coverimage{%
+% \vspace*{-4cm}\begin{center}
+% \includegraphics[width=0.1\textwidth]{zwaluw_r}
+% \end{center}\vspace*{-5cm}
+% }
+% 
+% \makefrontpage
+%
+% \StopEventually{}
+%
+% \section{Implementation}
+%
+%
+% \iffalse
+%<*frontpage>
+% \fi
+%% \subsection{frontpage}
+%    \begin{macrocode}
+\newif\if@dutchlanguage \@dutchlanguagefalse
+\newif\if@generic \@generictrue
+\RequirePackage{graphicx}
+%    \end{macrocode}
+%+++++++++++++++++++++++++ COLOR ++++++++++++++
+%    \begin{macrocode}
+\RequirePackage{xcolor}
+\definecolor{rulecolor}{rgb}{0.08, 0.38, 0.74}
+%    \end{macrocode}
+%%\definecolor{dimgray}{rgb}{0.41, 0.41, 0.41}
+%%\definecolor{mlinkcolor}{rgb}{0.04, 0.19, 0.37}
+%    \begin{macrocode}
+\RequirePackage{authblk}
+%    \end{macrocode}
+%
+% \begin{macro}{\supervisortext}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    \begin{macrocode}
+\def\supervisortext{Supervisor}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\titletext}
+%    \begin{macrocode}
+\def\titletext{Title}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\authortextsingular}
+%    \begin{macrocode}
+\def\authortextsingular{Author}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\authortextplural}
+%    \begin{macrocode}
+\def\authortextplural{Authors}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\datetext}
+%    \begin{macrocode}
+\def\datetext{Date}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\bytext}
+%    \begin{macrocode}
+\def\bytext{by}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\tracktext}
+%    \begin{macrocode}
+\def\tracktext{Track}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\secondgradertext}
+%    \begin{macrocode}
+\def\secondgradertext{Second examiner}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\logosize}
+%    \begin{macrocode}
+\def\logosize{5cm}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\departmenttext}
+%    \begin{macrocode}
+\def\departmenttext{\relax}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\universitytext}
+%    \begin{macrocode}
+\def\universitytext{\relax}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\logopicture}
+%    \begin{macrocode}
+\def\logopicture{\relax}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\facultytext}
+%    \begin{macrocode}
+\def\facultytext{\relax}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\universityaddress}
+%    \begin{macrocode}
+\def\universityaddress{\relax}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\website}
+%    \begin{macrocode}
+\def\website{\relax}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\DeclareOption{dutch}{
+    \@dutchlanguagetrue
+%    \end{macrocode}
+% Dutch values for translatable constant text
+%    \begin{macrocode}
+    \def\supervisortext{Begeleider}
+    \def\titletext{Titel}
+    \def\authortextsingular{Auteur}
+    \def\authortextplural{Auteurs}
+    \def\datetext{Einddatum}
+    \def\bytext{door}
+    \def\tracktext{Richting}
+    \def\secondgradertext{Tweede beoordelaar}
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\DeclareOption{vu}{% VU specific values
+%    \end{macrocode}
+%
+% \begin{macro}{\logosize}
+%    \begin{macrocode}
+\def\logosize{1.5cm}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\@genericfalse
+%    \end{macrocode}
+%
+% \begin{macro}{\website}
+%    \begin{macrocode}
+\def\website{http://www.math.vu.nl/}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\universityaddress}
+%    \begin{macrocode}
+\def\universityaddress{de Boelelaan 1111, 1081 HV Amsterdam}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\if@dutchlanguage
+  \def\logopicture{vu/VU-logo2.png}
+  \def\departmenttext{Afdeling Wiskunde}
+  \def\facultytext{Faculteit der Exacte Wetenschappen}
+  \def\universitytext{Vrije Universiteit Amsterdam}
+\else
+  \def\logopicture{vu/VU-logo2.png}
+  \def\departmenttext{Department of Mathematics}
+  \def\facultytext{Faculty of Sciences}
+  \def\universitytext{Vrije Universiteit Amsterdam}
+\fi
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\DeclareOption{uva}{% UvA specific values
+\@genericfalse
+%    \end{macrocode}
+%
+% \begin{macro}{\logosize}
+%    \begin{macrocode}
+\def\logosize{1.5cm}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\website}
+%    \begin{macrocode}
+\def\website{http://math.vu.nl/}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\universityaddress}
+%    \begin{macrocode}
+\def\universityaddress{de Boelelaan 1111, 1081 HV Amsterdam}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\if@dutchlanguage
+  \def\logopicture{uvalogo-nl}
+  \def\departmenttext{Korteweg-de Vries Instituut voor Wiskunde}
+  \def\facultytext{Faculteit der Natuurwetenschappen, Wiskunde en Informatica}
+  \def\universitytext{Universiteit van Amsterdam}
+\else
+  \def\logopicture{uvalogo-en}
+  \def\departmenttext{Korteweg-de Vries Institute for Mathematics}
+  \def\facultytext{Faculty of Science}
+  \def\universitytext{University of Amsterdam}
+\fi
+}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+% \begin{macro}{\subtitle}
+% Variable text commands
+%    \begin{macrocode}
+\def\subtitle#1{\gdef\@subtitle{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\institute}
+%    \begin{macrocode}
+\def\institute#1{\gdef\@institute{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\instituteaddress}
+%    \begin{macrocode}
+\def\instituteaddress#1{\gdef\@instituteaddress{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\coverimage}
+%    \begin{macrocode}
+\def\coverimage#1{\gdef\@coverimage{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\abstracttitle}
+%    \begin{macrocode}
+\def\abstracttitle#1{\gdef\@abstracttitle{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\what}
+%    \begin{macrocode}
+\def\what#1{\gdef\@what{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\track}
+%    \begin{macrocode}
+\def\track#1{\gdef\@track{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\programme}
+%    \begin{macrocode}
+\def\programme#1{\gdef\@programme{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\supervisor}
+%    \begin{macrocode}
+\def\supervisor#1{\gdef\@supervisor{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\supervisor{\relax}
+%    \end{macrocode}
+%
+% \begin{macro}{\secondgrader}
+%    \begin{macrocode}
+\def\secondgrader#1{\gdef\@secondgrader{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\secondgrader{\relax}
+\coverimage{}
+\what{}
+\track{\relax}
+\subtitle{\relax}
+\programme{\relax}
+\supervisor{\relax}
+\secondgrader{\relax}
+\RequirePackage{authblk}
+%    \end{macrocode}
+%
+% \begin{macro}{\MH@authors}
+%    \begin{macrocode}
+\def\MH@authors{}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\author}
+%    \begin{macrocode}
+\renewcommand\author[2][]%
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+      {\ifnewaffil\addtocounter{affil}{1}%
+       \edef\AB@thenote{\arabic{affil}}\fi
+      \if\relax#1\relax\def\AB@note{\AB@thenote}\else\def\AB@note{#1}%
+        \setcounter{Maxaffil}{0}\fi
+      \ifnum\value{authors}>1\relax
+      \@namedef{@sep\number\c@authors}{\Authsep}\fi
+      \addtocounter{authors}{1}%
+      \begingroup
+          \let\protect\@unexpandable@protect \let\and\AB@pand
+          \def\thanks{\protect\thanks}\def\footnote{\protect\footnote}%
+         \@temptokena=\expandafter{\AB@authors}%
+         {\def\\{\protect\\[\@affilsep]\protect\Affilfont
+              \protect\AB@resetsep}%
+              \xdef\AB@author{\AB@blk@and#2}%
+       \ifnewaffil\gdef\AB@las{}\gdef\AB@lasx{\protect\Authand}\gdef\AB@as{}%
+           \xdef\AB@authors{\the\@temptokena\AB@blk@and}%
+       \else
+          \xdef\AB@authors{\the\@temptokena\AB@as\AB@au@str}%
+          \global\let\AB@las\AB@lasx\gdef\AB@lasx{\protect\Authands}%
+          \gdef\AB@as{\Authsep}%
+       \fi
+       \gdef\AB@au@str{#2}}%
+         \@temptokena=\expandafter{\AB@authlist}%
+         \let\\=\authorcr
+         \xdef\AB@authlist{\the\@temptokena
+           \protect\@nameuse{@sep\number\c@authors}%
+           \protect\Authfont#2\AB@authnote{\AB@note}}%
+%    \end{macrocode}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%    \begin{macrocode}
+     \ifnum\value{authors}>1\relax
+        \xdef\MH@authors{\MH@authors,  #2}
+    \else
+        \gdef\MH@authors{#2}
+%    \end{macrocode}
+%%        \gdef\@authordetails{2,1}
+%    \begin{macrocode}
+    \fi
+%    \end{macrocode}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%    \begin{macrocode}
+      \endgroup
+      \ifnum\value{authors}>2\relax
+      \@namedef{@sep\number\c@authors}{\Authands}\fi
+      \newaffilfalse
+}
+%    \end{macrocode}
+%
+% \begin{macro}{\makefrontpage}
+%    \begin{macrocode}
+\newcommand{\makefrontpage}{
+ %% \typeout{\MH@authors}
+ \@ifundefined{hypersetup}{\relax}{%
+ \hypersetup{
+	pdftitle={\@title},
+	pdfsubject={\@programme\ \@track\ \@what},
+	pdfauthor={\MH@authors}
+	}}%
+ %% %\pdfsetup
+ \thispagestyle{empty}
+ \vspace*{1pt}
+ {\centering
+ \if\@programme\relax
+ \else {\Large\@programme\par}
+ \if\@track\relax\else\medskip{\large\tracktext: \@track\par}\fi
+ \bigskip\fi
+ {\Large \textit{\@what}\par}\bigskip\medskip
+ {\color{rulecolor}\hrule\@height2pt}\bigskip
+ {\LARGE \textbf{\normalfont\bfseries \@title}\par}
+ \bigskip
+ {\color{rulecolor}\hrule\@height2pt}\bigskip\medskip
+ {\large \bytext\par}\medskip
+ %%%%%%%%
+ \setbox0=\hbox{\MH@authors}\ifdim\wd0=0pt\relax\else{\LARGE \MH@authors\\}\bigskip\fi
+ %% {\LARGE \MH@authors\\}\bigskip
+ {\large \@date\par}\bigskip\bigskip\bigskip
+ \setbox0=\hbox{\@supervisor}\ifdim\wd0=0pt\relax\else{\large\supervisortext: \@supervisor\par}\bigskip\fi
+ \setbox0=\hbox{\@secondgrader}\ifdim\wd0=0pt\relax\else{\large\secondgradertext: \@secondgrader\par}\fi
+ \vspace{\stretch{1}}
+ \@coverimage
+ \vspace{\stretch{1}}
+ \@institute
+ }
+ \cleardoublepage
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\if@titlepage
+ \let\@maketitle=\maketitle%
+  \renewcommand\maketitle{\begin{titlepage}%
+ \@ifundefined{hypersetup}{\relax}{%
+ \hypersetup{
+	pdftitle={\@title},
+	pdfsubject={\@programme\ \@track\ \@what},
+	pdfauthor={\MH@authors}
+	}}%
+ %% \pdfsetup
+ \@maketitle
+ \thispagestyle{empty}
+ \vspace*{1pt}
+ {\centering
+ \if\@programme\relax
+ \else {\Large\@programme\par}
+ \if\@track\relax\else\medskip{\large\tracktext: \@track\par}\fi
+ \bigskip\fi
+ {\Large \textit{\@what}\par}\bigskip\medskip
+ {\color{rulecolor}\hrule\@height2pt}\bigskip
+ {\LARGE \textbf{\normalfont\bfseries \@title}\par}
+ \bigskip
+ {\color{rulecolor}\hrule\@height2pt}\bigskip\medskip
+ {\large \bytext\par}\medskip
+ %%%%%%%%
+ \setbox0=\hbox{\MH@authors}\ifdim\wd0=0pt\relax\else{\LARGE \MH@authors\\}\bigskip\fi
+ %% {\LARGE \MH@authors\\}\bigskip
+ {\large \@date\par}\bigskip\bigskip\bigskip
+%    \end{macrocode}
+%    \begin{macrocode}
+ \setbox0=\hbox{\@supervisor}\ifdim\wd0=0pt\relax\else{\large\supervisortext: \@supervisor\par}\bigskip\fi
+ \setbox0=\hbox{\@secondgrader}\ifdim\wd0=0pt\relax\else{\large\secondgradertext: \@secondgrader\par}\fi
+ \vspace{\stretch{1}}
+ \@coverimage
+ \vspace{\stretch{1}}
+ \@institute
+ }
+  \end{titlepage}%
+  }
+\fi
+%    \end{macrocode}
+%% Default values for variable text
+%    \begin{macrocode}
+\institute{
+ \if\logopicture\relax\else%
+ {\raggedleft\includegraphics[height=\logosize]{\logopicture}\vspace{-\logosize}\\}\fi%
+ {\raggedright
+ \if\departmenttext\relax\else\departmenttext\\\smallskip\fi%
+ \if\facultytext\relax\else\if@generic\else \facultytext\\ \fi\fi%
+ }}
+\instituteaddress{%
+ \if\departmenttext\relax\else\departmenttext\\\fi%
+ \if\universitytext\relax\else\universitytext\\\fi%
+ %% \universityaddress\\
+ \if\universityaddress\relax\else\if@generic\else \universityaddress\\ \fi\fi%
+ \if\website\relax\else\url{\website}{}\fi%
+}
+%    \end{macrocode}
+% \iffalse
+%</frontpage>
+% \fi
+% \iffalse
+%<*frontpage.ltxml>
+% \fi
+%% \subsection{frontpage.ltxml}
+%    \begin{macrocode}
+# -*- mode: Perltidy -*-
+# LaTeXML bindings for frontpage.sty
+use LaTeXML::Package; # to load these definitions
+use strict;
+use warnings;
+DefMacro('\makefrontpage','\relax');
+DefMacro('\abstracttitle{}','\gdef\@abstracttitle{#1}');
+DefMacro('\coverimage{}','');
+DefMacro('\secondgrader{}','');
+DefMacro('\what{}','');
+DefMacro('\supervisor{}','');
+DefMacro('\programme{}','');
+1;
+%    \end{macrocode}
+% \iffalse
+%</frontpage.ltxml>
+% \fi
+% \iffalse
+%<*install>
+#!/bin/bash
+BASEFILE="frontpage"
+OUTDIRSTY=~/texmf/tex/latex/mh
+OUTDIRXML=~/texmf/tex/latexml/mh
+OUTDIRDOC=~/texmf/doc/latex/mh
+
+pdflatex $BASEFILE.dtx
+okular $BASEFILE.pdf &
+
+mkdir -p $OUTDIRDOC
+mkdir -p $OUTDIRSTY
+mkdir -p $OUTDIRXML
+
+rm $BASEFILE.aux $BASEFILE.out $BASEFILE.idx $BASEFILE.log  $BASEFILE.glo
+mv ./$BASEFILE.sty $OUTDIRSTY/$BASEFILE.sty
+mv ./$BASEFILE.sty.ltxml $OUTDIRXML/$BASEFILE.sty.ltxml
+cp ./$BASEFILE.pdf $OUTDIRDOC/$BASEFILE.pdf
+mktexlsr
+%</install>
+% \fi
+%
+%
+% \Finale
+\endinput

@@ -1,0 +1,280 @@
+% \iffalse meta-comment
+%
+% Copyright (C) <+year+> by Marc Heijn <marc@heijn-buis.demon.nl>
+% ---------------------------------------------------------------------------
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is <+maintainer+>.
+%
+% This work consists of the files partitions.dtx and partitions.ins
+% and the derived filebase partitions.<+extension+>.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{partitions.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\Provides<+Type+>{partitions}
+%<*package>
+    [2025/10/07 v0.3 tikz-partitions]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{partitions}[2025/10/07]
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{partitions.dtx}
+  \PrintChanges
+  \PrintIndex
+\end{document}
+%</driver>
+% \fi 
+%
+% \CheckSum{108}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v0.3}{2025/10/07}{First time DTX-file}
+%
+% \DoNotIndex{\newcommand,\newenvironment}
+%
+% \providecommand*{\url}{\texttt}
+% \GetFileInfo{partitions.dtx}
+% \title{The \textsf{partitions} package}
+% \author{Marc Heijn \\ \url{marc@heijn-buis.demon.nl}}
+% \date{\fileversion~from \filedate}
+%
+% \maketitle
+%
+%
+% \section{Introduction}
+% A \textbf{(integer) patition} of a non-negative integer $n$
+% is a way  to write $n$ as a sum of integers.
+% Sums that only differ in the order of the summation
+% are considered to be the same.
+% A \textbf{part} is an individual summation.
+% The number of different sums in a partition of $n$ is
+% the partition function, $\mathbf{p(n)}$.
+% A partition $\pi$ of $n$ is indicated as
+% $\mathbf{\pi \vdash n}$.
+% A partion can be written as sums, a tuple, in a superscript notation or
+% as a Young diagram (also called a Ferrers diagram).
+%
+% \begin{table}[htb]
+% \begin{tabular}{lllc}
+% $5$ &  $(5)$ & $ 5^1$ & \partition{5}\\
+% $4+1$ &  $(4,1)$ & $ 1^1 4^1$ & \partition{4,1}\\
+% $3+2$ &  $(3,2)$ & $ 2^1 3^1$ & \partition{3,2}\\
+% $3+1+1$ &  $(3,1,1)$ & $ 1^2 3^1$ & \partition{3,1,1}\\
+% $2+2+1$ &  $(2,2,1)$ & $ 1^1 2^2 $ & \partition{2,2,1}\\
+% $2+1+1+1$ &  $(2,1,1,1)$ & $ 1^3 2^1$ & \partition{2,1,1,1}\\
+% $1+1+1+1+1$ &  $(1,1,1,1,1)$ & $1^5$ & \partition{1,1,1,1,1} \\
+% \end{tabular}
+% \caption{The partition of 5 can be written as}
+% \end{table}
+%
+% \section{Install}
+% \begin{verbatim}
+% latex partitions.ins
+% bash install.sh
+% \end{verbatim}
+%
+% \section{Usage}
+% \begin{verbatim}
+% \partition{3,1,1}
+% \end{verbatim}
+% \partition{3,1,1}
+% \begin{verbatim}
+% \begin{tikzpicture}[x=2mm,y=2mm]
+% \tikzpartition{7,5,3}
+% \node[dotpartblue] at (d11)  {};
+% \node[dotpartblue] at (d12)  {};
+% \node[dotpartblue] at (d13)  {};
+% \node[dotpartblue] at (d14)  {};
+% \node[dotpartblue] at (d15)  {};
+% \node[dotpartgreen] at (d21)  {};
+% \node[dotpartgreen] at (d22)  {};
+% \node[dotpartgreen] at (d23)  {};
+% \end{tikzpicture}
+% \end{verbatim}
+% \begin{tikzpicture}[x=2mm,y=2mm]
+% \tikzpartition{7,5,3}
+% \node[dotpartblue] at (d11)  {};
+% \node[dotpartblue] at (d12)  {};
+% \node[dotpartblue] at (d13)  {};
+% \node[dotpartblue] at (d14)  {};
+% \node[dotpartblue] at (d15)  {};
+% \node[dotpartgreen] at (d21)  {};
+% \node[dotpartgreen] at (d22)  {};
+% \node[dotpartgreen] at (d23)  {};
+% \end{tikzpicture}
+%
+% \StopEventually{}
+%
+% \section{Implementation}
+%
+%
+% \iffalse
+%<*partitions>
+% \fi
+%% \subsection{partitions}
+%    \begin{macrocode}
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+%    \end{macrocode}
+%
+% \begin{macro}{\tikzpartition}
+%    \begin{macrocode}
+\newcommand{\tikzpartition}[1]{
+	\pgfkeys{tikz/dotpart/.style={
+		draw, fill, color=red!40, inner sep=0pt, minimum size=4pt, circle},
+		tikz/dotpartblue/.style={dotpart, color=blue!40},
+		tikz/dotpartgreen/.style={dotpart, color=green!60},
+		}
+	\def\maxi{0}
+	\foreach \i [count=\ii from 0] in {#1}{%{5,3,1}{
+		\xdef\part@count{\ii}%
+		\pgfmathparse{max(\maxi,\i)}%
+		\xdef\maxi{\pgfmathresult}%
+		\foreach \j in {1,...,\i}{%
+			\node[dotpart] (d\ii\j) at ($(1*\j,-1*\ii)$) {};
+			%\node[] (d\ii\j) at ($(1*\j,-1*\ii)$) {d\ii\j};
+		}
+	}
+	%\draw (0,-\part@count-1) rectangle (\maxi+1,1);
+	\clip (0,-\part@count-1) rectangle (\maxi+1,1); % margin of 1 unit
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\partition}
+%    \begin{macrocode}
+\newcommand{\partition}[1]{%
+\foreach \i [count=\ii from 0] in {#1}{\xdef\part@count{\ii}}%\part@count
+\raisebox{-\part@count mm}{%
+\begin{tikzpicture}[x=2mm,y=2mm]%
+\tikzpartition{#1}%
+\end{tikzpicture}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</partitions>
+% \fi
+% \iffalse
+%<*partitions.ltxml>
+% \fi
+%% \subsection{partitions.ltxml}
+%    \begin{macrocode}
+# -*- mode: Perltidy -*-
+# LaTeXML bindings for partitions.sty
+package LaTeXML::Package::pool; # to put new subs & variables in common pool
+use LaTeXML::Package; # to load these definitions
+use strict; # good style
+use warnings;
+#RequirePackage('tikz',options=> ['calc']);
+RawTeX(<<'EoTeX');
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+%    \end{macrocode}
+%
+% \begin{macro}{\tikzpartition}
+%    \begin{macrocode}
+\newcommand{\tikzpartition}[1]{
+	\pgfkeys{tikz/dotpart/.style={
+		draw, fill, color=red!40, inner sep=0pt, minimum size=4pt, circle},
+		tikz/dotpartblue/.style={dotpart, color=blue!40},
+		tikz/dotpartgreen/.style={dotpart, color=green!60},
+		}
+	\def\maxi{0}
+	\foreach \i [count=\ii from 0] in {#1}{%{5,3,1}{
+		\xdef\part@count{\ii}%
+		\pgfmathparse{max(\maxi,\i)}%
+		\xdef\maxi{\pgfmathresult}%
+		\foreach \j in {1,...,\i}{%
+			\node[dotpart] (d\ii\j) at ($(1*\j,-1*\ii)$) {};
+			%\node[] (d\ii\j) at ($(1*\j,-1*\ii)$) {d\ii\j};
+		}
+	}
+	%\draw (0,-\part@count-1) rectangle (\maxi+1,1);
+	\clip (0,-\part@count-1) rectangle (\maxi+1,1); % margin of 1 unit
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\partition}
+%    \begin{macrocode}
+\newcommand{\partition}[1]{%
+\foreach \i [count=\ii from 0] in {#1}{\xdef\part@count{\ii}}%\part@count
+\raisebox{-\part@count mm}{%
+\begin{tikzpicture}[x=2mm,y=2mm]%
+\tikzpartition{#1}%
+\end{tikzpicture}}%
+} 
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+EoTeX 
+1;
+%    \end{macrocode}
+% \iffalse
+%</partitions.ltxml>
+% \fi
+% \iffalse
+%<*install>
+#!/bin/bash
+BASEFILE="partitions"
+OUTDIRSTY=~/texmf/tex/latex/mh
+OUTDIRXML=~/texmf/tex/latexml/mh
+OUTDIRDOC=~/texmf/doc/latex/mh
+
+pdflatex $BASEFILE.dtx
+okular $BASEFILE.pdf &
+
+mkdir -p $OUTDIRDOC
+mkdir -p $OUTDIRSTY
+mkdir -p $OUTDIRXML
+
+rm $BASEFILE.aux $BASEFILE.out $BASEFILE.idx $BASEFILE.log  $BASEFILE.glo
+mv ./$BASEFILE.sty $OUTDIRSTY/$BASEFILE.sty
+mv ./$BASEFILE.sty.ltxml $OUTDIRXML/$BASEFILE.sty.ltxml
+cp ./$BASEFILE.pdf $OUTDIRDOC/$BASEFILE.pdf
+mktexlsr
+%</install>
+% \fi
+%
+%
+% \Finale
+\endinput
