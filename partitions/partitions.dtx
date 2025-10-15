@@ -26,15 +26,27 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\Provides<+Type+>{partitions}
 %<*package>
-    [2025/10/07 v0.3 tikz-partitions]
+    [2025/10/15 v0.4 tikz-partitions]
 %</package>
 %
 %<*driver>
 \documentclass{ltxdoc}
-\usepackage{partitions}[2025/10/07]
+\usepackage{partitions}[2025/10/15]
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny,
+  frame=non,
+  breaklines=true,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black}
+}
 \begin{document}
   \DocInput{partitions.dtx}
   \PrintChanges
@@ -43,7 +55,7 @@
 %</driver>
 % \fi 
 %
-% \CheckSum{108}
+% \CheckSum{54}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -63,6 +75,7 @@
 %
 %
 % \changes{v0.3}{2025/10/07}{First time DTX-file}
+% \changes{v0.4}{2025/10/15}{ltxml preamble correction by removing}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
 %
@@ -142,10 +155,10 @@
 % \section{Implementation}
 %
 %
+% \subsection{partitions.sty}
 % \iffalse
 %<*partitions>
 % \fi
-%% \subsection{partitions}
 %    \begin{macrocode}
 \RequirePackage{tikz}
 \usetikzlibrary{calc}
@@ -191,25 +204,24 @@
 % \iffalse
 %</partitions>
 % \fi
+% \subsection{partitions.sty.ltxml}
+% \lstinputlisting[language=Perl]{partitions.sty.ltxml}
+%
 % \iffalse
-%<*partitions.ltxml>
-% \fi
-%% \subsection{partitions.ltxml}
-%    \begin{macrocode}
+%<*partitions-ltxml>
 # -*- mode: Perltidy -*-
 # LaTeXML bindings for partitions.sty
+
 package LaTeXML::Package::pool; # to put new subs & variables in common pool
 use LaTeXML::Package; # to load these definitions
 use strict; # good style
 use warnings;
+
 #RequirePackage('tikz',options=> ['calc']);
+
 RawTeX(<<'EoTeX');
 \RequirePackage{tikz}
 \usetikzlibrary{calc}
-%    \end{macrocode}
-%
-% \begin{macro}{\tikzpartition}
-%    \begin{macrocode}
 \newcommand{\tikzpartition}[1]{
 	\pgfkeys{tikz/dotpart/.style={
 		draw, fill, color=red!40, inner sep=0pt, minimum size=4pt, circle},
@@ -229,12 +241,6 @@ RawTeX(<<'EoTeX');
 	%\draw (0,-\part@count-1) rectangle (\maxi+1,1);
 	\clip (0,-\part@count-1) rectangle (\maxi+1,1); % margin of 1 unit
 }
-%    \end{macrocode}
-% \end{macro}
-%
-%
-% \begin{macro}{\partition}
-%    \begin{macrocode}
 \newcommand{\partition}[1]{%
 \foreach \i [count=\ii from 0] in {#1}{\xdef\part@count{\ii}}%\part@count
 \raisebox{-\part@count mm}{%
@@ -242,15 +248,9 @@ RawTeX(<<'EoTeX');
 \tikzpartition{#1}%
 \end{tikzpicture}}%
 } 
-%    \end{macrocode}
-% \end{macro}
-%
-%    \begin{macrocode}
 EoTeX 
 1;
-%    \end{macrocode}
-% \iffalse
-%</partitions.ltxml>
+%</partitions-ltxml>
 % \fi
 % \iffalse
 %<*install>

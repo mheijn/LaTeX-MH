@@ -26,15 +26,27 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\Provides<+Type+>{unresolved}
 %<*package>
-    [2025/10/07 v0.3 tikz-partitions]
+    [2025/10/15 v0.4 tikz-partitions]
 %</package>
 %
 %<*driver>
 \documentclass{ltxdoc}
-\usepackage{unresolved}[2025/10/07]
+\usepackage{unresolved}[2025/10/15]
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny,
+  frame=single,
+  breaklines=true,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black}
+}
 \begin{document}
   \DocInput{unresolved.dtx}
   \PrintChanges
@@ -43,7 +55,7 @@
 %</driver>
 % \fi 
 %
-% \CheckSum{123}
+% \CheckSum{61}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -62,7 +74,8 @@
 %   Right brace   \}     Tilde         \~}
 %
 %
-% \changes{v0.3}{2025/10/07}{First time DTX-file}
+% \changes{v0.3}{2025/10/07}{Tikz- partitions}
+% \changes{v0.4}{2025/10/15}{ltxml preamble correction by removing}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
 %
@@ -117,10 +130,10 @@
 % \section{Implementation}
 %
 %
+% \subsection{unresolved.sty}
 % \iffalse
 %<*unresolved>
 % \fi
-%% \subsection{unresolved}
 %    \begin{macrocode}
 \RequirePackage{hyperref}
 %    \end{macrocode}
@@ -188,42 +201,26 @@
 % \iffalse
 %</unresolved>
 % \fi
+% \subsection{unresolved.sty.ltxml}
+% \lstinputlisting[language=Perl]{unresolved.sty.ltxml}
+%
 % \iffalse
-%<*unresolved.ltxml>
-% \fi
-%% \subsection{unresolved.ltxml}
-%    \begin{macrocode}
+%<*unresolved-ltxml>
 # -*- mode: Perltidy -*-
 # LaTeXML bindings for local.sty
+
 package LaTeXML::Package::pool; # to put new subs & variables in common pool
 use LaTeXML::Package; # to load these definitions
 use strict; # good style
 use warnings;
+
 RawTeX(<<'EOTeX');
 \ProvidesPackage{unresolved}
 \RequirePackage{hyperref}
-%    \end{macrocode}
-%
-% \begin{macro}{\UK@prefix}
-%    \begin{macrocode}
 \def\UK@prefix{}
-%    \end{macrocode}
-% \end{macro}
-%
-%
-% \begin{macro}{\setPrefixUnresolvedProblems}
-%    \begin{macrocode}
 \newcommand{\setPrefixUnresolvedProblems}[1]{\gdef\UK@prefix{#1}}
-%    \end{macrocode}
-% \end{macro}
-%
-%    \begin{macrocode}
 \newcounter{counter@unknown}
 \let\@unresolveditems\relax
-%    \end{macrocode}
-%
-% \begin{macro}{\unknown}
-%    \begin{macrocode}
 \newcommand{\unknown}[1]{%
   \stepcounter{counter@unknown}%
   \edef\UK@num{\UK@prefix\thecounter@unknown}% expand counter to string
@@ -233,26 +230,8 @@ RawTeX(<<'EOTeX');
   \protected@edef\next{\endgroup\noexpand\g@addto@macro\noexpand\@unresolveditems{\noexpand\item[\noexpand\hyperlink{UK\UK@num}{\UK@num}] #1}}%
   \next
 }
-%    \end{macrocode}
-% \end{macro}
-%
-%
-% \begin{macro}{\nameunresolvedproblems}
-%    \begin{macrocode}
 \def\nameunresolvedproblems{Unresolved problems}
-%    \end{macrocode}
-% \end{macro}
-%
-%
-% \begin{macro}{\setNameUnresolvedProblems}
-%    \begin{macrocode}
 \newcommand{\setNameUnresolvedProblems}[1]{\gdef\nameunresolvedproblems{#1}}
-%    \end{macrocode}
-% \end{macro}
-%
-%
-% \begin{macro}{\unresolveditems}
-%    \begin{macrocode}
 \newcommand{\unresolveditems}{
 \ifx\@unresolveditems\relax\else%
 \section*{\nameunresolvedproblems}
@@ -261,15 +240,10 @@ RawTeX(<<'EOTeX');
 \end{itemize}
 \fi%
 }
-%    \end{macrocode}
-% \end{macro}
-%
-%    \begin{macrocode}
 EOTeX
+
 1;
-%    \end{macrocode}
-% \iffalse
-%</unresolved.ltxml>
+%</unresolved-ltxml>
 % \fi
 % \iffalse
 %<*install>
