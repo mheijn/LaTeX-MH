@@ -1,0 +1,35 @@
+.ltx_mhtitle .ltx_title,
+.ltx_mhtitle .ltx_date,
+.ltx_mhtitle .ltx_author,
+.ltx_mhtitle .ltx_prefix,
+.ltx_mhtitle .ltx_role_author{ 
+	text-align: center; 
+	margin:0.5em 0 0.5em 0; 
+  font-weight: normal;
+}
+.ltx_mhtitle * { 
+	text-align: center; 
+  font-weight: normal;
+}
+.ltx_mhtitle .ltx_title    { font-size: 200%; }
+.ltx_mhtitle .ltx_author   { font-size: 120%; }
+.ltx_mhtitle .ltx_prefix   { font-size: 120%; }
+.ltx_mhtitle .ltx_date     { font-size: 120%; }
+.ltx_mhtitle .ltx_subtitle { font-size: 120%; }
+
+.ltx_titleline {height: 2px; width: 80%; margin:auto; background:#1a53bf}
+
+.ltx_texttype{visibility: hidden;width: 0px; display: inline-block;}
+.ltx_subtext {font-size:100%; }
+.ltx_programme .ltx_texttype { }
+.ltx_programme .ltx_subtext { }
+.ltx_what .ltx_texttype { }
+.ltx_what .ltx_subtext {}
+.ltx_secondgrader,
+.ltx_supervisor {text-align:left;}
+.ltx_secondgrader .ltx_texttype { visibility:visible ;width:auto; }
+.ltx_secondgrader .ltx_subtext {font-weight:bold;}
+.ltx_supervisor .ltx_texttype {visibility:visible ;width:auto; }
+.ltx_supervisor .ltx_subtext {font-weight:bold;}
+.ltx_institute,
+.ltx_instituteaddress {text-align:right;}

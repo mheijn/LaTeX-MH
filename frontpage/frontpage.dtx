@@ -26,15 +26,27 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\Provides<+Type+>{frontpage}
 %<*package>
-    [2025/10/08 v0.3 tikz-partitions]
+    [2025/10/14 v0.4 tikz-partitions]
 %</package>
 %
 %<*driver>
 \documentclass{ltxdoc}
-\usepackage{frontpage}[2025/10/08]
+\usepackage{frontpage}[2025/10/14]
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny,
+  frame=non,
+  breaklines=true,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black}
+}
 \begin{document}
   \DocInput{frontpage.dtx}
   \PrintChanges
@@ -43,7 +55,7 @@
 %</driver>
 % \fi 
 %
-% \CheckSum{639}
+% \CheckSum{671}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -63,6 +75,7 @@
 %
 %
 % \changes{v0.3}{2025/10/08}{First time DTX-file}
+% \changes{v0.4}{2025/10/14}{ltxml preamble correction by removing}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
 %
@@ -76,65 +89,78 @@
 %
 %
 %
-% \section{Introduction}
-% The package creates a front page.
+%\section{Introduction}
+%The package creates a front page.
 %
-% \section{Install}
-% \begin{verbatim}
-% latex frontpage.ins
-% bash install.sh
-% \end{verbatim}
+%\section{Install}
+%\begin{verbatim}
+%latex frontpage.ins
+%bash install.sh
+%\end{verbatim}
 %
-% \section{Usage}
+%\section{Usage}
 %
-% \begin{verbatim}
-% \title{The frontpage package}
-% \subtitle{an MH-package}
-% \abstracttitle{The frontpage package}
-% \author[marc@heijn-buis.demon.nl]{Marc Heijn}
-% \date{October 12, 2023}
-% \what{package}
-% \programme{Homebrew packages}
-% \coverimage{%
-% \vspace*{-4cm}
-% \includegraphics[width=\textwidth]{zwaluw_r}
-% \vspace*{-5cm}
-% }
-% 
-% \makefrontpage
-% \maketitle
-% \end{verbatim}
+%\begin{verbatim}
+%\title{The frontpage package}
+%\subtitle{an MH-package}
+%\abstracttitle{The frontpage package}
+%\author[marc@heijn-buis.demon.nl]{Marc Heijn}
+%\date{October 12, 2023}
+%\what{package}
+%\programme{Homebrew packages}
+%\coverimage{%
+%\vspace*{-4cm}
+%\centering
+%\includegraphics[width=\textwidth]{zwaluw_r}
+%\vspace*{-5cm}
+%}
 %
-% \newpage
-% \makeatletter
-% \def\MH@authors{}
-% \setcounter{authors}{0}
-% \makeatother
+%\makefrontpage
+%\maketitle
+%\end{verbatim}
 %
-% \title{The frontpage package}
-% \subtitle{an MH-package}
-% \abstracttitle{The frontpage package}
-% \author[marc@heijn-buis.demon.nl]{M. Heijn}
-% \date{October 12, 2023}
-% \what{package}
-% \programme{Homebrew packages}
-% \coverimage{%
-% \vspace*{-4cm}\begin{center}
-% \includegraphics[width=0.1\textwidth]{zwaluw_r}
-% \end{center}\vspace*{-5cm}
-% }
-% 
-% \makefrontpage
+%When using LaTeXMLc use \texttt{latexmlc --css=frontpage.css -splitat=chapter}.
+%
+%\newpage
+%\makeatletter
+%\def\MH@authors{}
+%\setcounter{authors}{0}
+%\gdef\title#1{\gdef\@title{#1}}
+%\gdef\date#1{\gdef\@date{#1}}
+%\ifx\author\undefined%
+%\newcommand{\author}[2][]{\fp@author{#1}{#2}}%
+%\else%
+%\renewcommand{\author}[2][]{\fp@author{#1}{#2}}%
+%\fi
+%\makeatother
+%
+%\title{The frontpage package}
+%\subtitle{an MH-package}
+%\abstracttitle{The frontpage package}
+%\author[marc@heijn-buis.demon.nl]{M. Heijn}
+%\author[marc@heijn-buis.demon.nl]{Marc. Heijn}
+%\date{October 12, 2023}
+%\what{package}
+%\programme{Homebrew packages}
+%\institute{Home made}
+%\instituteaddress{street and city\\ Country}
+%\supervisor{person one}
+%\secondgrader{person two}
+%\coverimage{\vspace*{-4cm}\includegraphics[width=0.1\textwidth]{~/texmf/tex/latex/zwaluw_r}\vspace*{-5cm}}
+%
+%\makefrontpage
+%
+%\maketitle
 %
 % \StopEventually{}
 %
 % \section{Implementation}
 %
 %
+% \subsection{frontpage.sty}
 % \iffalse
 %<*frontpage>
 % \fi
-%% \subsection{frontpage}
 %    \begin{macrocode}
 \newif\if@dutchlanguage \@dutchlanguagefalse
 \newif\if@generic \@generictrue
@@ -354,8 +380,22 @@
 \ProcessOptions\relax
 %    \end{macrocode}
 %
-% \begin{macro}{\subtitle}
+% \begin{macro}{\title}
 % Variable text commands
+%    \begin{macrocode}
+\gdef\title#1{\gdef\@title{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\date}
+%    \begin{macrocode}
+\gdef\date#1{\gdef\@date{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\subtitle}
 %    \begin{macrocode}
 \def\subtitle#1{\gdef\@subtitle{#1}}
 %    \end{macrocode}
@@ -378,7 +418,7 @@
 %
 % \begin{macro}{\coverimage}
 %    \begin{macrocode}
-\def\coverimage#1{\gdef\@coverimage{#1}}
+\newcommand{\coverimage}[1]{\gdef\@coverimage{#1}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -429,8 +469,8 @@
 %
 %    \begin{macrocode}
 \secondgrader{\relax}
-\coverimage{}
-\what{}
+\coverimage{\relax}
+\what{\relax}
 \track{\relax}
 \subtitle{\relax}
 \programme{\relax}
@@ -448,12 +488,15 @@
 %
 % \begin{macro}{\author}
 %    \begin{macrocode}
-\renewcommand\author[2][]%
+\renewcommand{\author}[2][]{\fp@author{#1}{#2}}%
 %    \end{macrocode}
 % \end{macro}
 %
+%
+% \begin{macro}{\fp@author}
 %    \begin{macrocode}
-      {\ifnewaffil\addtocounter{affil}{1}%
+\def\fp@author#1#2{%
+      \ifnewaffil\addtocounter{affil}{1}%
        \edef\AB@thenote{\arabic{affil}}\fi
       \if\relax#1\relax\def\AB@note{\AB@thenote}\else\def\AB@note{#1}%
         \setcounter{Maxaffil}{0}\fi
@@ -500,6 +543,8 @@
       \newaffilfalse
 }
 %    \end{macrocode}
+% \end{macro}
+%
 %
 % \begin{macro}{\makefrontpage}
 %    \begin{macrocode}
@@ -532,16 +577,34 @@
  \setbox0=\hbox{\@supervisor}\ifdim\wd0=0pt\relax\else{\large\supervisortext: \@supervisor\par}\bigskip\fi
  \setbox0=\hbox{\@secondgrader}\ifdim\wd0=0pt\relax\else{\large\secondgradertext: \@secondgrader\par}\fi
  \vspace{\stretch{1}}
- \@coverimage
+ \begin{center}\@coverimage\end{center}
  \vspace{\stretch{1}}
- \@institute
- }
+ }\noindent
+ \@institute\\
+ \@instituteaddress
  \cleardoublepage
 }
 %    \end{macrocode}
 % \end{macro}
 %
+%
+% \begin{macro}{\@maketitle}
 %    \begin{macrocode}
+\def\@maketitle{%
+  \begin{center}%
+  \let \footnote \thanks
+    {\LARGE \@title \par}%
+    \vskip 1.5em%
+    {\large
+      \lineskip .5em%
+      \begin{tabular}[t]{c}%
+        \MH@authors
+      \end{tabular}\par}%
+    \vskip 1em%
+    {\large \@date}%
+  \end{center}%
+  \par
+  \vskip 1.5em}
 \if@titlepage
  \let\@maketitle=\maketitle%
   \renewcommand\maketitle{\begin{titlepage}%
@@ -570,14 +633,13 @@
  \setbox0=\hbox{\MH@authors}\ifdim\wd0=0pt\relax\else{\LARGE \MH@authors\\}\bigskip\fi
  %% {\LARGE \MH@authors\\}\bigskip
  {\large \@date\par}\bigskip\bigskip\bigskip
-%    \end{macrocode}
-%    \begin{macrocode}
  \setbox0=\hbox{\@supervisor}\ifdim\wd0=0pt\relax\else{\large\supervisortext: \@supervisor\par}\bigskip\fi
  \setbox0=\hbox{\@secondgrader}\ifdim\wd0=0pt\relax\else{\large\secondgradertext: \@secondgrader\par}\fi
  \vspace{\stretch{1}}
  \@coverimage
  \vspace{\stretch{1}}
  \@institute
+ \@instituteaddress
  }
   \end{titlepage}%
   }
@@ -600,30 +662,270 @@
  \if\website\relax\else\url{\website}{}\fi%
 }
 %    \end{macrocode}
+% \end{macro}
+%
 % \iffalse
 %</frontpage>
 % \fi
+% \subsection{frontpage.sty.ltxml}
+% \lstinputlisting[language=Perl]{frontpage.sty.ltxml}
+%
 % \iffalse
 %<*frontpage.ltxml>
-% \fi
-%% \subsection{frontpage.ltxml}
-%    \begin{macrocode}
 # -*- mode: Perltidy -*-
 # LaTeXML bindings for frontpage.sty
+
+package LaTeXML::Package::Pool;
 use LaTeXML::Package; # to load these definitions
+use LaTeXML::Util::Pathname;
+
 use strict;
 use warnings;
-DefMacro('\makefrontpage','\relax');
+
+LoadPool('TeX');
+RequirePackage('graphics');
+RequirePackage('svg');
+
+# forcing a new html page using latexmlc --splitat=chapter 
+DefConstructor('\newWebPage',"<ltx:chapter xml:id='PB'>");
+
+##############################################
+# Adjusting center with first paragraph no indent 
+# Taken from TeX.pool.ltxml
+##############################################
+sub setAlignAndClass {
+  my ($document, $node, $align, $class) = @_;
+  my $model = $document->getModel;
+  my $qname = $model->getNodeQName($node);
+  if    ($qname eq 'ltx:tag') { }                                    # HACK
+  elsse { 
+    if ($align && $document->canHaveAttribute($qname, 'align')) {
+      $node->setAttribute(align => $align); }
+    if ($class && $document->canHaveAttribute($qname, 'class')) {
+      $document->addClass($node, $class); }
+    }
+  return; }
+
+sub AligningEnvironment {
+  my ($align, $class, $document, %props) = @_;
+  map { setAlignAndClass($document, $_, $align, $class) }
+    insertBlock($document, $props{body});    # Add class attribute to new nodes.
+  return; }
+
+
+DefEnvironment('{mhtitle}',  sub {
+    $_[0]->maybeCloseElement('ltx:p');                        # this starts a new vertical block
+    AligningEnvironment('', 'ltx_mhtitle ltx_noindent', @_); },    # aligning will take care of \\\\ "rows"
+      beforeDigest => sub {
+      Let('\par', '\inner@par');
+      Let('\\\\', '\inner@par'); 
+      });
+##############################################
+
 DefMacro('\abstracttitle{}','\gdef\@abstracttitle{#1}');
-DefMacro('\coverimage{}','');
-DefMacro('\secondgrader{}','');
-DefMacro('\what{}','');
-DefMacro('\supervisor{}','');
-DefMacro('\programme{}','');
+DefMacro('\subtitle{}','\gdef\@subtitle{#1}');
+DefMacro('\coverimage{}','\gdef\@coverimage{#1}');
+DefMacro('\secondgrader{}','\gdef\@secondgrader{#1}');
+DefMacro('\what{}','\gdef\@what{#1}');
+DefMacro('\track{}','\gdef\@track{#1}');
+DefMacro('\supervisor{}','\gdef\@supervisor{#1}');
+DefMacro('\programme{}','\gdef\@programme{#1}');
+DefMacro('\institute{}','\gdef\@institute{#1}');
+DefMacro('\instituteaddress{}','\gdef\@instituteaddress{#1}');
+
+Let('\@abstracttitle','\relax');
+Let('\@track','\relax');
+Let('\@programme','\relax');
+Let('\@what','\relax');
+#Let('\@','\relax');
+
+# DefMacro\titletext{Title}
+# DefMacro\authortextsingular{Author}
+# DefMacro\authortextplural{Authors}
+DefMacro('\datetext','Date');
+DefMacro('\bytext','by');
+DefMacro('\tracktext','Track');
+DefMacro('\supervisortext','Supervisor');
+DefMacro('\secondgradertext','Second examiner');
+DefMacro('\whattext','What');
+DefMacro('\programmetext','Programme');
+DefMacro('\institutetext','');
+DefMacro('\instituteaddresstext','');
+
+
+DefConstructor('\mhtitle@line',
+  '<ltx:p class="ltx_titleline"> </ltx:p>',
+    mode         => 'text', 
+    bounded => 0,
+);
+
+DefConstructor('\mhtitle@item{}',  
+  '<ltx:p class="ltx_#1">'.
+  '<ltx:text class="ltx_texttype">#tekst</ltx:text>'.
+  '<ltx:text class="ltx_subtext">#value<ltx:text></ltx:p>',
+  properties => sub{
+    my $item = ToString($_[1]);
+    #print("\n value = " . $item."\n");
+    my $tekst = ToString(Digest(T_CS('\\'.$item.'text')));
+    my $value = ToString(Digest(T_CS('\\@'.$item)));
+    if ( $tekst ne "") {$tekst = $tekst .":";}
+    #print($tekst ." = " . $value ."\n");
+    (tekst => $tekst, value => $value);
+  }
+  );
+
+DefMacro('\@maketitle','\relax');
+
+DefMacro('\maketitle',#'\relax');#\my@frontmatterhere');#sub{ MyFrontMatter();});
+	'\begin{mhtitle}'.
+	'\if\@title\relax\relax\else\mhtitle@title{\@title\fi}'.
+	'\mhtitle@authors{}'.
+	'\mhtitle@date'.
+	'\end{mhtitle}'
+);
+
+DefMacro('\makefrontpage',
+	'\newWebPage' .
+	'\begin{mhtitle}' .
+    '\if\@programme\relax\else\mhtitle@item{programme}\fi' .
+    '\if\@track\relax\else\mhtitle@item{track}\fi'.
+    '\if\@what\relax\else\mhtitle@item{what}\fi'.
+	'\mhtitle@line' .
+	'\if\@title\relax\relax\else\mhtitle@title{\@title\fi}'.
+	'\mhtitle@line' .
+	'\mhtitle@authors{}' .
+	'\mhtitle@date' .
+    '\@coverimage' .
+    '\if\@supervisor\relax\else\mhtitle@item{supervisor}\fi'.
+    '\if\@secondgrader\relax\else\mhtitle@item{secondgrader}\fi'.
+    '\if\@institute\relax\else\mhtitle@item{institute}\fi'.
+    '\if\@instituteaddress\relax\else\mhtitle@item{instituteaddress}\fi'.
+	'\end{mhtitle}' .
+	'\newWebPage'
+);
+
+Let('\@title','\relax');
+DefConstructor('\mhtitle@title{}',
+# 		"<ltx:title class='ltx_title_document ltx_mhtitle'>#1".
+# 		"</ltx:title>",
+		"<ltx:p class='ltx_title'>#1".
+		"</ltx:p>",
+    mode         => 'text', 
+    bounded => 0,
+);
+	
+Let('\@date','\today');
+DefConstructor('\mhtitle@date',
+    "<ltx:p class='ltx_date'>#datum</ltx:p>",
+    mode         => 'text', 
+    bounded => 1,
+    properties => sub{(datum => ToString(Digest(T_CS('\@date'))));
+    });
+  
+sub index_of {
+    my ($value, @array) = @_;
+    for my $i (0..$#array) {return $i if $array[$i] eq $value;}
+    return -1; 
+}
+sub last_element {
+    my ($value, @array) = @_;
+    my $index = index_of( @_ ) + 1;
+    if ($index eq $#array) {return 1;}
+    return 0;
+}
+    
+my @mh_affil;
+my @mh_authors;
+DefMacro('\author[]{}',sub {
+	my ($gullet, $affil, $name) =@_;
+	push(@mh_affil,ToString($affil));
+	push(@mh_authors,ToString($name));
+	return;
+});
+
+DefMacro('\mhtitle@authors', sub{
+    my $i = 0;
+    (map {$i++; (T_CS('\mhtitle@author'),T_BEGIN,Tokenize($_),T_END,T_BEGIN,Token($i),T_END);} @mh_authors);
+  });	
+DefConstructor('\mhtitle@author{}{}', 
+#   "<ltx:creator role='author' class='ltx_mhtitle' before='#prefix'>"
+#  		. "<ltx:personname>#1</ltx:personname>"
+#  		. "</ltx:creator>",
+  "<ltx:text class='ltx_prefix'>#prefix</ltx:text>" . 
+  "<ltx:text class='ltx_author'>" .
+  "#1" .
+  "</ltx:text>",
+	mode         => 'text', 
+	bounded => 1,
+ 	properties => sub{
+       my $author = ToString($_[1]);
+       my $number = ToString($_[2]);
+       #print("\nProperties mhtitleauthor: " . $number . " " .$author. " Total=" . $#mh_authors);
+       my $prefix = "";
+       if( $number <= 1 ){}
+       elsif ($number == ($#mh_authors + 1) ){$prefix = " and ";}
+       else { $prefix = ",";}
+       (prefix => $prefix);
+      },
+	);
+
+#
+#article
+#AddToMacro(T_CS('\maketitle'), T_CS('\ltx@authors@oneline'));
+#LaTeX.pool
+# See frontmatter support in TeX.ltxml
+# Let('\@title', '\@empty');
+# DefMacro('\title[]{}', '\if.#1.\else\def\shorttitle{#1}\@add@frontmatter{ltx:toctitle}{#1}\fi'
+#     . '\def\@title{#2}\@add@frontmatter{ltx:title}{#2}', locked => 1);
+#
+AssignValue(frontmatter_deferred => 1, 'global');
+AssignValue(frontmatter_done => 1, 'global');    # OK, we're placing FrontMatter here, now.
+
 1;
-%    \end{macrocode}
-% \iffalse
+
 %</frontpage.ltxml>
+% \fi
+% \subsection{frontpage.css}
+% \lstinputlisting[language=html]{frontpage.css}
+%
+% \iffalse
+%<*frontpage.css>
+.ltx_mhtitle .ltx_title,
+.ltx_mhtitle .ltx_date,
+.ltx_mhtitle .ltx_author,
+.ltx_mhtitle .ltx_prefix,
+.ltx_mhtitle .ltx_role_author{ 
+	text-align: center; 
+	margin:0.5em 0 0.5em 0; 
+  font-weight: normal;
+}
+.ltx_mhtitle * { 
+	text-align: center; 
+  font-weight: normal;
+}
+.ltx_mhtitle .ltx_title    { font-size: 200%; }
+.ltx_mhtitle .ltx_author   { font-size: 120%; }
+.ltx_mhtitle .ltx_prefix   { font-size: 120%; }
+.ltx_mhtitle .ltx_date     { font-size: 120%; }
+.ltx_mhtitle .ltx_subtitle { font-size: 120%; }
+
+.ltx_titleline {height: 2px; width: 80%; margin:auto; background:#1a53bf}
+
+.ltx_texttype{visibility: hidden;width: 0px; display: inline-block;}
+.ltx_subtext {font-size:100%; }
+.ltx_programme .ltx_texttype { }
+.ltx_programme .ltx_subtext { }
+.ltx_what .ltx_texttype { }
+.ltx_what .ltx_subtext {}
+.ltx_secondgrader,
+.ltx_supervisor {text-align:left;}
+.ltx_secondgrader .ltx_texttype { visibility:visible ;width:auto; }
+.ltx_secondgrader .ltx_subtext {font-weight:bold;}
+.ltx_supervisor .ltx_texttype {visibility:visible ;width:auto; }
+.ltx_supervisor .ltx_subtext {font-weight:bold;}
+.ltx_institute,
+.ltx_instituteaddress {text-align:right;}
+%</frontpage.css>
 % \fi
 % \iffalse
 %<*install>
@@ -643,6 +945,7 @@ mkdir -p $OUTDIRXML
 rm $BASEFILE.aux $BASEFILE.out $BASEFILE.idx $BASEFILE.log  $BASEFILE.glo
 mv ./$BASEFILE.sty $OUTDIRSTY/$BASEFILE.sty
 mv ./$BASEFILE.sty.ltxml $OUTDIRXML/$BASEFILE.sty.ltxml
+mv ./$BASEFILE.css $OUTDIRXML/$BASEFILE.css
 cp ./$BASEFILE.pdf $OUTDIRDOC/$BASEFILE.pdf
 mktexlsr
 %</install>
